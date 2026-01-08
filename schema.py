@@ -1,0 +1,1 @@
+schema = "customers(customer_id,name)"

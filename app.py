@@ -1,0 +1,1 @@
+print("NL-->SQL project initialized")
