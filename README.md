@@ -35,4 +35,9 @@ NL Question → Prompt + Schema → SQL Generation → SQL Validation → Execut
 - LangChain SQLChain integration
 - Support for multiple databases
 - Query result formatting
-- User interface (CLI / Web)
+- User interface (CLI / Web).
+## LLM Integration Note
+The system is designed to integrate with real LLM providers.
+For development and demonstration purposes, the LLM layer is mocked
+to avoid external API quota dependency while preserving architecture.
+
