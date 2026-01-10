@@ -1,24 +1,8 @@
 from schema import SCHEMA
 from prompt import PROMPT_TEMPLATE
 from validator import is_safe_sql
-
-
-def generate_sql(prompt: str) -> str:
-    """
-    Placeholder for LLM call.
-    For now, we return a hardcoded SQL for testing.
-    """
-    return """
-    SELECT
-        c.customer_id,
-        SUM(o.amount) AS total_revenue
-    FROM customers c
-    JOIN orders o
-        ON c.customer_id = o.customer_id
-    GROUP BY c.customer_id
-    ORDER BY total_revenue DESC
-    LIMIT 5;
-    """
+from llm import generate_sql_from_llm
+from db import execute_sql
 
 
 def main():
@@ -29,18 +13,18 @@ def main():
         question=question
     )
 
-    print("\n--- PROMPT SENT TO LLM ---")
-    print(prompt)
-
-    sql = generate_sql(prompt)
-
     print("\n--- GENERATED SQL ---")
+    sql = generate_sql_from_llm(prompt)
     print(sql)
 
-    if is_safe_sql(sql):
-        print("\nSQL passed safety validation ✅")
-    else:
-        print("\nUnsafe SQL detected ❌")
+    if not is_safe_sql(sql):
+        print("Unsafe SQL detected ❌")
+        return
+
+    print("\n--- QUERY RESULT ---")
+    results = execute_sql(sql)
+    for row in results:
+        print(row)
 
 
 if __name__ == "__main__":
