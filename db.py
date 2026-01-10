@@ -5,9 +5,12 @@ def execute_sql(sql: str):
         conn = sqlite3.connect("data.db")
         cur = conn.cursor()
         cur.execute(sql)
-        results = cur.fetchall()
+
+        rows = cur.fetchall()
+        columns = [desc[0] for desc in cur.description]
+
         conn.close()
-        return results
+        return columns, rows
 
     except sqlite3.Error as e:
         raise RuntimeError(f"Database error: {e}")

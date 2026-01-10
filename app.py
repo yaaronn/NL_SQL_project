@@ -3,6 +3,7 @@ from prompt import PROMPT_TEMPLATE
 from validator import is_safe_sql
 from llm import generate_sql_from_llm
 from db import execute_sql
+from formatter import print_table
 
 
 def main():
@@ -22,11 +23,10 @@ def main():
         if not is_safe_sql(sql):
             raise ValueError("Unsafe SQL detected")
 
-        results = execute_sql(sql)
+        columns, rows = execute_sql(sql)
 
         print("\n--- QUERY RESULT ---")
-        for row in results:
-            print(row)
+        print_table(columns, rows)
 
     except Exception as e:
         print("\n❌ ERROR OCCURRED")
